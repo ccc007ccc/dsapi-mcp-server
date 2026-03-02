@@ -64,6 +64,48 @@ export DSAPI_MCP_CONFIG=/path/to/config.yaml
 - `image.enable_axis`：是否绘制边框刻度。
 - `system_control.use_su`：是否通过 `su -c input ...` 发送系统按键。
 
+## 客户端接入示例
+
+### Claude Desktop
+
+在 Claude Desktop 的 MCP 配置文件中加入：
+
+```json
+{
+  "mcpServers": {
+    "dsapi-mcp-server": {
+      "command": "/path/to/dsapi-mcp-server/.venv/bin/python",
+      "args": [
+        "/path/to/dsapi-mcp-server/server.py"
+      ],
+      "env": {
+        "DSAPI_MCP_CONFIG": "/path/to/dsapi-mcp-server/config.yaml"
+      }
+    }
+  }
+}
+```
+
+### 通用 stdio MCP 客户端
+
+若客户端支持以命令启动 MCP Server，可使用：
+
+```bash
+/path/to/dsapi-mcp-server/.venv/bin/python /path/to/dsapi-mcp-server/server.py
+```
+
+并设置环境变量：
+
+```bash
+DSAPI_MCP_CONFIG=/path/to/dsapi-mcp-server/config.yaml
+```
+
+### 接入后验证
+
+1. 在 MCP 客户端中刷新工具列表，确认出现 `get_annotated_screen`。
+2. 调用 `get_annotated_screen()`，应返回一张图片和 `status: ok` 的结构化结果。
+3. 再调用 `tap(x, y)` 做一次点击验证触控链路。
+
 ## MCP 工具清单
 
 - `get_annotated_screen()`：获取带坐标刻度的屏幕截图和元信息。
