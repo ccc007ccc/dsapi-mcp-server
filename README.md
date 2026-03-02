@@ -60,9 +60,17 @@ export DSAPI_MCP_CONFIG=/path/to/config.yaml
 
 - `uds.data_socket`：数据通道 socket 路径。
 - `timeouts.frame_wait_timeout_ms`：单帧等待超时。
-- `image.max_long_edge`：图片最长边，控制传输开销。
+- `image.max_long_edge`：图片最长边，值越大越清晰（带宽/体积更高）。
+- `image.jpeg_quality`：JPEG 质量（推荐 85~92）。
+- `image.jpeg_subsampling`：色度子采样（`0` 清晰度最高）。
+- `image.enable_sharpen`：是否启用锐化增强。
+- `image.axis_font_size`：坐标字体大小（`0` 表示自动）。
 - `image.enable_axis`：是否绘制边框刻度。
 - `system_control.use_su`：是否通过 `su -c input ...` 发送系统按键。
+
+路径解析规则：
+
+- `config.yaml` 里的 `uds.*socket` 支持相对路径，服务会自动按 `config.yaml` 所在目录解析为绝对路径，避免受启动 cwd 影响。
 
 ## 客户端接入示例
 

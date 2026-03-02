@@ -62,6 +62,13 @@ def _cfg_str(cfg: Dict[str, Any], key: str, default: str) -> str:
     return text if text else default
 
 
+def _resolve_config_relative_path(base_dir: Path, value: str) -> str:
+    raw = Path(value).expanduser()
+    if raw.is_absolute():
+        return str(raw)
+    return str((base_dir / raw).resolve())
+
+
 def _lerp(a: float, b: float, t: float) -> float:
     return a + (b - a) * t
 
@@ -80,8 +87,9 @@ class RuntimeContext:
     2. 将模型坐标（压缩图坐标）还原为物理坐标（原始屏幕坐标）。
     """
 
-    def __init__(self, config: Dict[str, Any]) -> None:
+    def __init__(self, config: Dict[str, Any], config_dir: Path) -> None:
         self.config = config
+        self.config_dir = config_dir
         uds_cfg = config.get("uds", {})
         timeout_cfg = config.get("timeouts", {})
         image_cfg = config.get("image", {})
@@ -121,6 +129,7 @@ class RuntimeContext:
         data_socket = "artifacts/run/dsapi.data.sock"
         if isinstance(uds_cfg, dict):
             data_socket = str(uds_cfg.get("data_socket", data_socket))
+        data_socket = _resolve_config_relative_path(self.config_dir, data_socket)
 
         self.client = DirectScreenClient(
             data_socket_path=data_socket,
@@ -270,7 +279,7 @@ async def _system_key_action(action: str, steps: int = 1, interval_ms: int = 80)
 DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent / "config.yaml"
 CONFIG_PATH = Path(os.environ.get("DSAPI_MCP_CONFIG", str(DEFAULT_CONFIG_PATH))).expanduser()
 CONFIG = _load_config(CONFIG_PATH)
-RUNTIME = RuntimeContext(CONFIG)
+RUNTIME = RuntimeContext(CONFIG, CONFIG_PATH.resolve().parent)
 mcp = FastMCP("dsapi-mcp-server")
 
 

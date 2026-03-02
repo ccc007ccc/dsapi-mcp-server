@@ -8,12 +8,18 @@ timeouts:
   reconnect_delay_ms: 120
 
 image:
-  max_long_edge: 1024
-  jpeg_quality: 80
+  max_long_edge: 1600
+  jpeg_quality: 90
+  jpeg_subsampling: 0
+  enable_sharpen: true
+  sharpen_radius: 1.2
+  sharpen_percent: 135
+  sharpen_threshold: 3
   enable_axis: true
   axis_step: 100
-  axis_tick_size: 10
-  axis_line_width: 2
+  axis_tick_size: 26
+  axis_line_width: 4
+  axis_font_size: 0
 
 gesture:
   default_swipe_duration_ms: 300
