@@ -1,0 +1,37 @@
+uds:
+  control_socket: "DirectScreenAPI/artifacts/run/dsapi.sock"
+  data_socket: "DirectScreenAPI/artifacts/run/dsapi.data.sock"
+
+timeouts:
+  socket_timeout_ms: 30000
+  frame_wait_timeout_ms: 250
+  reconnect_delay_ms: 120
+
+image:
+  max_long_edge: 1024
+  jpeg_quality: 80
+  enable_axis: true
+  axis_step: 100
+  axis_tick_size: 10
+  axis_line_width: 2
+
+gesture:
+  default_swipe_duration_ms: 300
+  default_long_press_duration_ms: 1000
+  default_drag_hold_ms: 500
+  default_drag_duration_ms: 500
+  zoom_default_distance: 400
+  zoom_default_duration_ms: 300
+
+system_control:
+  enable: true
+  use_su: true
+  su_bin: "su"
+  input_bin: "input"
+  command_timeout_ms: 3000
+  keycodes:
+    back: "KEYCODE_BACK"
+    home: "KEYCODE_HOME"
+    recents: "KEYCODE_APP_SWITCH"
+    volume_up: "KEYCODE_VOLUME_UP"
+    volume_down: "KEYCODE_VOLUME_DOWN"
